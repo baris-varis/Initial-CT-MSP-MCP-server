@@ -20,6 +20,7 @@ from typing import Optional
 
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 
 from cache import TrialCache
 from ctgov_client import ClinicalTrialsClient
@@ -65,6 +66,8 @@ mcp = FastMCP(
         "Use dual_source_search as the primary entry point for council sessions. "
         "All results include freshness metadata — always surface retrieved_at to clinicians."
     ),
+    # Public read-only server — DNS rebinding protection not applicable
+    transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False),
 )
 
 # ── Internal helpers ──────────────────────────────────────────────────────────
