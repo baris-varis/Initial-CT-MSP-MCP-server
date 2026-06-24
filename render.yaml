@@ -1,0 +1,33 @@
+# Render.com deployment configuration
+# Deploy: connect your GitHub repo in the Render dashboard and use this file.
+# Free tier uses ephemeral cache (/tmp) — resets on restart. Upgrade to Starter
+# for a persistent disk and set CACHE_PATH=/data/ctgov.db.
+
+services:
+  - type: web
+    name: ctgov-mcp-oncohub
+    runtime: docker
+    plan: free          # change to "starter" for persistent disk
+    healthCheckPath: /mcp
+    envVars:
+      - key: PORT
+        value: "8000"
+      - key: CACHE_PATH
+        value: /tmp/ctgov.db       # ephemeral on free tier
+      - key: STATUS_TTL_DAYS
+        value: "7"
+      - key: META_TTL_DAYS
+        value: "30"
+      - key: CTGOV_RATE_INTERVAL
+        value: "1.0"
+      - key: CTGOV_TIMEOUT
+        value: "30.0"
+
+# Persistent disk config (uncomment for Starter plan and above):
+#   disk:
+#     name: ctgov-cache
+#     mountPath: /data
+#     sizeGB: 1
+#   envVars:
+#     - key: CACHE_PATH
+#       value: /data/ctgov.db
