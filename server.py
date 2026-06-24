@@ -358,6 +358,9 @@ async def dual_source_search(
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
+    import uvicorn
+
     logger.info("Starting ClinicalTrials.gov MCP server on port %d", PORT)
     logger.info("Cache: %s (STATUS_TTL=%dd, META_TTL=%dd)", CACHE_PATH, STATUS_TTL_DAYS, META_TTL_DAYS)
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=PORT)
+    app = mcp.streamable_http_app()
+    uvicorn.run(app, host="0.0.0.0", port=PORT)
